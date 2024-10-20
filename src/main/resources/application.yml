@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: rempro
+  datasource:
+    url: jdbc:postgresql://localhost:5432/remproapp
+    username: ${POSTGRES_USERNAME}
+    password: ${POSTGRES_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create
+    show-sql: false
+    open-in-view: false
+server:
+  port: 8095
