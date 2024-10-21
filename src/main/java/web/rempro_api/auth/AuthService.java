@@ -34,6 +34,7 @@ public class AuthService {
      */
     @Transactional(readOnly = true)
     public AuthResponse login(LoginResquest request) {
+        // Authentification via AuthenticationManager
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
@@ -41,9 +42,11 @@ public class AuthService {
             throw new CustomAuthException("Invalid username or password");
         }
 
+        // Récupérer l'utilisateur
         UserDetails user = userRepository.findByUsername(request.getUsername())
                 .orElseThrow(() -> new CustomAuthException("User not found"));
 
+        // Générer un token JWT
         String token = jwtService.getToken(user);
 
         return AuthResponse.builder().token(token).build();
@@ -55,19 +58,30 @@ public class AuthService {
      * @param request - les informations d'enregistrement
      */
     @Transactional
-    public void register(RegisterRequest request) {
+    public AuthResponse register(RegisterRequest request) {
         validateRegisterRequest(request);
 
         if (userRepository.findByUsername(request.getUsername()).isPresent()) {
             throw new CustomAuthException("Username already exists");
         }
 
+        // Créer un nouvel utilisateur et encoder son mot de passe
         Users newUser = new Users();
         newUser.setUsername(request.getUsername());
-        newUser.setPassword(passwordEncoder.encode(request.getPassword()));
+        newUser.setPassword(passwordEncoder.encode(request.getPassword())); // Mot de passe encodé
         newUser.setRole(Role.USER);
 
+        // Sauvegarder le nouvel utilisateur
         userRepository.save(newUser);
+
+        // Charger les UserDetails pour générer un JWT
+        UserDetails userDetails = userRepository.findByUsername(newUser.getUsername())
+                .orElseThrow(() -> new CustomAuthException("User not found"));
+
+        // Générer un token JWT pour le nouvel utilisateur
+        String token = jwtService.getToken(userDetails);
+
+        return AuthResponse.builder().token(token).build();
     }
 
     /**

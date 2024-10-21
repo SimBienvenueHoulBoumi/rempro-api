@@ -24,16 +24,26 @@ public class SecurityConfig {
 	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http.csrf(csrf -> csrf.disable())
 				.authorizeHttpRequests(authRequest -> authRequest
-						.requestMatchers("/auth/**", "/swagger-ui/**", "/v3/api-docs/**", "/swagger-resources/**",
-								"/webjars/**")
+						// Permettre l'accès aux endpoints publics
+						.requestMatchers("/auth/**", "/swagger-ui/**", "/v3/api-docs/**", "/swagger-resources/**", "/webjars/**")
 						.permitAll()
+						
+						// Autoriser les utilisateurs authentifiés pour les endpoints "followed"
+						.requestMatchers("/followed/**").authenticated()
+						
+						// Tout autre endpoint nécessite une authentification
 						.anyRequest().authenticated())
-				.sessionManagement(
-						sessionManager -> sessionManager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+				
+				// Configurer le mode stateless pour les sessions
+				.sessionManagement(sessionManager -> sessionManager
+						.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+				
+				// Fournir un fournisseur d'authentification personnalisé
 				.authenticationProvider(authProvider)
+				
+				// Ajouter le filtre JWT avant l'authentification de base
 				.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
 		return http.build();
 	}
-
 }

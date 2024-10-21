@@ -31,8 +31,8 @@ import lombok.NoArgsConstructor;
 
 public class Users implements UserDetails {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column
     private String username;
@@ -73,4 +73,5 @@ public class Users implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
 }
