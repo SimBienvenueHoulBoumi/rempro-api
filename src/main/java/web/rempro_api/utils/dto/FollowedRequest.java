@@ -12,4 +12,6 @@ import lombok.NoArgsConstructor;
 public class FollowedRequest {
     String name;
     String levelType;
+    Number levelNumber;
+    Number episodeNumber;
 }

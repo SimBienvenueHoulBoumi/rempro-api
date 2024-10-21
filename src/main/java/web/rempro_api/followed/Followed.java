@@ -29,6 +29,12 @@ public class Followed {
     private LevelType levelType;
 
     @Column
+    private Number levelNumber;
+
+    @Column
+    private Number episodeNumber;
+
+    @Column
     private Date updatedAt;
 
     @Column

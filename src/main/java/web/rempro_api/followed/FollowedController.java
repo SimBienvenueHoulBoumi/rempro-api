@@ -13,7 +13,7 @@ import java.security.Principal;
 import java.util.List;
 
 @RequestMapping("/followed")
-@Tag(name = "Followed", description = "API for managing Followed items")
+@Tag(name = "Followed", description = "API routes for managing Followed items")
 @RestController
 @RequiredArgsConstructor
 public class FollowedController {

@@ -17,7 +17,7 @@ import web.rempro_api.utils.dto.RegisterRequest;
 import org.springframework.http.HttpStatus;
 
 @RequestMapping("/auth")
-@Tag(name = "Auth", description = "API for managing authentications")
+@Tag(name = "Auth", description = "API routes for managing authentications")
 @RestController
 @RequiredArgsConstructor
 public class AuthController {
