@@ -28,7 +28,7 @@ public class FollowedService {
 
         Followed followed = Followed.builder()
                 .name(request.getName())
-                .createdBy(user)
+                .createdBy(user) // Ensure this is populated
                 .levelType(LevelType.valueOf(request.getLevelType().toUpperCase()))
                 .createdAt(new Date())
                 .updatedAt(new Date())
