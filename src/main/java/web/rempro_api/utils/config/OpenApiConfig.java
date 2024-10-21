@@ -1,4 +1,4 @@
-package web.rempro_api.config;
+package web.rempro_api.utils.config;
 
 import org.springframework.context.annotation.Configuration;
 

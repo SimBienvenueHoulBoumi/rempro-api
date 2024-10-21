@@ -1,4 +1,4 @@
-package web.rempro_api.jwt;
+package web.rempro_api.utils.jwt;
 
 import java.util.Date;
 import java.util.HashMap;

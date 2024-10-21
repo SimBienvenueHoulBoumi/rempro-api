@@ -1,4 +1,4 @@
-package web.rempro_api.config;
+package web.rempro_api.utils.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,7 +10,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import lombok.RequiredArgsConstructor;
-import web.rempro_api.jwt.JwtAuthenticationFilter;
+import web.rempro_api.utils.jwt.JwtAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity

@@ -8,14 +8,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
-import web.rempro_api.jwt.JwtService;
-import web.rempro_api.users.Role;
 import web.rempro_api.users.Users;
 import web.rempro_api.users.UsersRepository;
 import web.rempro_api.utils.dto.AuthResponse;
 import web.rempro_api.utils.dto.LoginResquest;
 import web.rempro_api.utils.dto.RegisterRequest;
+import web.rempro_api.utils.enums.Role;
 import web.rempro_api.utils.exception.CustomAuthException;
+import web.rempro_api.utils.jwt.JwtService;
 
 @Service
 @RequiredArgsConstructor
