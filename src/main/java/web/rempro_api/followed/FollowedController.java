@@ -1,5 +1,6 @@
 package web.rempro_api.followed;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.Operation;
@@ -30,7 +31,7 @@ public class FollowedController {
     public ResponseEntity<Followed> createFollowed(@RequestBody FollowedRequest request, Principal principal) {
         String username = principal.getName();
         Followed follow = followedService.createFollowed(request, username);
-        return ResponseEntity.status(201).body(follow);
+        return new ResponseEntity<>(follow, HttpStatus.CREATED);
     }
 
     @Operation(summary = "Get Followed by ID", description = "Retrieves a Followed item by its ID.")

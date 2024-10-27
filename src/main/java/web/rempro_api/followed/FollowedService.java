@@ -30,6 +30,8 @@ public class FollowedService {
                 .name(request.getName())
                 .createdBy(user) // Ensure this is populated
                 .levelType(LevelType.valueOf(request.getLevelType().toUpperCase()))
+                .levelNumber(request.getLevelNumber())
+                .episodeNumber(request.getEpisodeNumber())
                 .createdAt(new Date())
                 .updatedAt(new Date())
                 .build();
