@@ -47,7 +47,6 @@ public class JwtService {
 
 	private Claims getAllClaims(String token) {
 		return Jwts.parser().verifyWith(getKey()).build().parseSignedClaims(token).getPayload();
-
 	}
 
 	public <T> T getClaim(String token, Function<Claims, T> claimsResolver) {
