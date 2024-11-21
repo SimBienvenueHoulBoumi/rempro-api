@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.Optional;
 
 @RequestMapping("/users")
 @Tag(name = "Users", description = "API routes for managing users")
@@ -62,14 +63,9 @@ public class UsersController {
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @GetMapping("/info")
-    public ResponseEntity<Users> getUserInfo(@RequestHeader("Authorization") String authorizationHeader) {
-        if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
-            throw new CustomAuthException("Authorization header is missing or invalid");
-        }
-
-        String token = authorizationHeader.substring(7);
-        Users user = usersService.getUserInfoFromToken(token);
-        return ResponseEntity.ok(user);
+    public ResponseEntity<Users> getUserInfo(Principal principal) {
+        String username = principal.getName();
+        return ResponseEntity.ok(this.usersService.getUserInfo(username));
     }
 
 }

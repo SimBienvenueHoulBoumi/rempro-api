@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import web.rempro_api.utils.dto.FollowedRequest;
+import web.rempro_api.utils.exception.CustomAuthException;
 
 import java.security.Principal;
 import java.util.List;
@@ -29,9 +30,13 @@ public class FollowedController {
     })
     @PostMapping
     public ResponseEntity<Followed> createFollowed(@RequestBody FollowedRequest request, Principal principal) {
-        String username = principal.getName();
-        Followed follow = followedService.createFollowed(request, username);
-        return new ResponseEntity<>(follow, HttpStatus.CREATED);
+        try {
+            var username = principal.getName();
+            var follow = followedService.createFollowed(request, username);
+            return new ResponseEntity<>(follow, HttpStatus.CREATED);
+        } catch (CustomAuthException ex) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
     }
 
     @Operation(summary = "Get Followed by ID", description = "Retrieves a Followed item by its ID.")
@@ -42,9 +47,12 @@ public class FollowedController {
     })
     @GetMapping("/{id}")
     public ResponseEntity<Followed> getFollowedById(@PathVariable Long id) {
-        return followedService.getFollowedById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        try {
+            Followed followed = followedService.getFollowedById(id);
+            return ResponseEntity.ok(followed);
+        } catch (CustomAuthException ex) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
     }
 
     @Operation(summary = "Get All Followed", description = "Retrieves all Followed items.")
@@ -67,8 +75,12 @@ public class FollowedController {
     })
     @PutMapping("/{id}")
     public ResponseEntity<Followed> updateFollowed(@PathVariable Long id, @RequestBody FollowedRequest request) {
-        Followed updatedFollowed = followedService.updateFollowed(id, request);
-        return ResponseEntity.ok(updatedFollowed);
+        try {
+            var updatedFollowed = followedService.updateFollowed(id, request);
+            return ResponseEntity.ok(updatedFollowed);
+        } catch (CustomAuthException ex) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
     }
 
     @Operation(summary = "Delete Followed", description = "Deletes a Followed item by its ID.")
@@ -79,8 +91,12 @@ public class FollowedController {
     })
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteFollowed(@PathVariable Long id) {
-        followedService.deleteFollowed(id);
-        return ResponseEntity.noContent().build();
+        try {
+            followedService.deleteFollowed(id);
+            return ResponseEntity.noContent().build();
+        } catch (CustomAuthException ex) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
     }
 
     @Operation(summary = "Get All Followed by User", description = "Retrieves all Followed items created by the logged-in user.")
@@ -91,8 +107,12 @@ public class FollowedController {
     })
     @GetMapping("/user")
     public ResponseEntity<List<Followed>> getAllFollowedByUser(Principal principal) {
-        String username = principal.getName();
-        List<Followed> followedList = followedService.getAllFollowedByUser(username);
-        return ResponseEntity.ok(followedList);
+        try {
+            var username = principal.getName();
+            var followedList = followedService.getAllFollowedByUser(username);
+            return ResponseEntity.ok(followedList);
+        } catch (CustomAuthException ex) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
     }
 }
