@@ -3,9 +3,7 @@ package web.rempro_api.followed;
 import java.time.Instant;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
-import java.util.function.Consumer;
 
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -30,10 +28,6 @@ public class FollowedService {
     private final FollowedRepository followedRepository;
     private final UsersRepository usersRepository;
     private final ExceptionAuthUtil exceptionUtil;
-
-    private String capitalize(String field) {
-        return field.substring(0, 1).toUpperCase() + field.substring(1);
-    }
 
     /**
      * Creates a new Followed entity based on the provided request and username.
