@@ -21,7 +21,7 @@
 
 {
     "username": "user44@mail.com",
-    "password": "user1234"
+    "password": "user123"
 }
 
 ## Followed

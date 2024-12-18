@@ -17,18 +17,20 @@ import io.jsonwebtoken.security.Keys;
 
 @Service
 public class JwtService {
-    String SECRET_KEY="dvgjbhkj551dzafrevc2663q2ds1d4e522sf5ss52dfd54df5qdffff";
+	String SECRET_KEY = "dvgjbhkj551dzafrevc2663q2ds1d4e522sf5ss52dfd54df5qdffff";
 
-    public String getToken(UserDetails user) {
+	public String getToken(UserDetails user) {
 		return getToken(new HashMap<>(), user);
 	}
 
 	private String getToken(Map<String, Object> extraClaims, UserDetails user) {
-		return Jwts.builder().claims(extraClaims).subject(user.getUsername())
-				.issuedAt(new Date(System.currentTimeMillis()))
-				.expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24)) // This date is 24 hours in the
-																					// future.
-				.signWith(getKey()).compact();
+		return Jwts.builder()
+				.claims(extraClaims)
+				.subject(user.getUsername()) // Nom de l'utilisateur comme sujet du token
+				.issuedAt(new Date(System.currentTimeMillis())) // Date de création du token
+				.expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24)) // Expiration après 24h
+				.signWith(getKey()) // Signature du token
+				.compact();
 	}
 
 	private SecretKey getKey() {

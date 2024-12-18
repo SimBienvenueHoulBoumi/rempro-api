@@ -2,6 +2,7 @@ package web.rempro_api.followed;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -13,6 +14,7 @@ import web.rempro_api.utils.exception.CustomAuthException;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Map;
 
 @RequestMapping("/followed")
 @Tag(name = "Followed", description = "API routes for managing Followed items")
@@ -29,14 +31,11 @@ public class FollowedController {
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @PostMapping
-    public ResponseEntity<Followed> createFollowed(@RequestBody FollowedRequest request, Principal principal) {
-        try {
-            var username = principal.getName();
-            var follow = followedService.createFollowed(request, username);
-            return new ResponseEntity<>(follow, HttpStatus.CREATED);
-        } catch (CustomAuthException ex) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-        }
+    public ResponseEntity<Map<String, String>> createFollowed(
+            @RequestBody FollowedRequest request,
+            @AuthenticationPrincipal String username) {
+        followedService.createFollowed(request, username);
+        return ResponseEntity.ok(Map.of("message", "Followed created successfully"));
     }
 
     @Operation(summary = "Get Followed by ID", description = "Retrieves a Followed item by its ID.")
